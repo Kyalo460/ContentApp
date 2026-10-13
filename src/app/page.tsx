@@ -1,8 +1,9 @@
-'use client'
+"use client";
 
-import { Hero, Features, CTA } from '@/components/landing/Hero'
-import { Header } from '@/components/layout/Header'
-import { Footer } from '@/components/layout/Footer'
+import { Hero, Features, CTA } from "@/components/landing/Hero";
+import { CreatorsSection } from "@/components/creators/CreatorsSection";
+import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
 
 export default function HomePage() {
   return (
@@ -10,10 +11,11 @@ export default function HomePage() {
       <Header />
       <main className="flex-1">
         <Hero />
+        <CreatorsSection />
         <Features />
         <CTA />
       </main>
       <Footer />
     </div>
-  )
+  );
 }

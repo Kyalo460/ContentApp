@@ -1,8 +1,8 @@
-'use client'
+﻿"use client";
 
-import { useState, useEffect } from 'react'
-import Link from 'next/link'
-import { motion } from 'framer-motion'
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { motion } from "framer-motion";
 import {
   Radio,
   CircleDot,
@@ -13,35 +13,35 @@ import {
   Loader2,
   Video,
   MonitorPlay,
-} from 'lucide-react'
-import { Header } from '@/components/layout/Header'
-import { Footer } from '@/components/layout/Footer'
-import { useAuth } from '@/components/auth/AuthProvider'
-import { LiveStream } from '@/lib/types'
+} from "lucide-react";
+import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
+import { useAuth } from "@/components/auth/AuthProvider";
+import { LiveStream } from "@/lib/types";
 
 export default function LivePage() {
-  const { user } = useAuth()
-  const [streams, setStreams] = useState<LiveStream[]>([])
-  const [loading, setLoading] = useState(true)
-  const [activeStream, setActiveStream] = useState<LiveStream | null>(null)
+  const { user } = useAuth();
+  const [streams, setStreams] = useState<LiveStream[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [activeStream, setActiveStream] = useState<LiveStream | null>(null);
 
   useEffect(() => {
     async function load() {
       try {
-        const res = await fetch('/api/live')
-        const data = await res.json()
-        setStreams(data.streams || [])
+        const res = await fetch("/api/live");
+        const data = await res.json();
+        setStreams(data.streams || []);
       } catch {
-        setStreams([])
+        setStreams([]);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
     }
-    load()
-  }, [])
+    load();
+  }, []);
 
-  const liveStream = streams.find((s) => s.status === 'live')
-  const upcoming = streams.filter((s) => s.status !== 'live')
+  const liveStream = streams.find((s) => s.status === "live");
+  const upcoming = streams.filter((s) => s.status !== "live");
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -49,7 +49,11 @@ export default function LivePage() {
       <main className="flex-1 pt-16">
         <section className="bg-gradient-to-b from-red-50 to-white dark:from-gray-900 dark:to-gray-950 border-b border-gray-100 dark:border-gray-900">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
               <div className="flex items-center gap-3 mb-4">
                 <span className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 text-sm font-medium">
                   <CircleDot className="w-4 h-4 animate-pulse" />
@@ -62,10 +66,12 @@ export default function LivePage() {
                   </span>
                 )}
               </div>
-              <h1 className="text-4xl sm:text-5xl font-bold mb-4 text-gray-900 dark:text-gray-100">Live Shows</h1>
+              <h1 className="text-4xl sm:text-5xl font-bold mb-4 text-gray-900 dark:text-gray-100">
+                Live Shows
+              </h1>
               <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl">
-                Showcase your art in real time. Stream from OBS or directly from your phone to all your
-                followers at once — no recording, no editing, just live.
+                Watch creators showcase their art in real time. See what {"'"}s
+                live right now, or browse upcoming shows below.
               </p>
             </motion.div>
           </div>
@@ -78,10 +84,13 @@ export default function LivePage() {
             </div>
           ) : (
             <div className="grid lg:grid-cols-3 gap-8">
-              {/* Player section */}
               <div className="lg:col-span-2 space-y-8">
                 {liveStream ? (
-                  <motion.div initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} className="card overflow-hidden">
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.98 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="card overflow-hidden"
+                  >
                     <div className="relative bg-black aspect-video">
                       <video
                         src={liveStream.playbackUrl}
@@ -94,14 +103,20 @@ export default function LivePage() {
                     </div>
                     <div className="p-6">
                       <div className="flex items-center gap-2 mb-2">
-                        <span className="px-2.5 py-1 rounded-lg bg-red-500 text-white text-xs font-bold uppercase tracking-wide">Live</span>
+                        <span className="px-2.5 py-1 rounded-lg bg-red-500 text-white text-xs font-bold uppercase tracking-wide">
+                          Live
+                        </span>
                         <span className="text-sm text-gray-500 dark:text-gray-400">
                           {liveStream.viewerCount} viewers
                         </span>
                       </div>
-                      <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">{liveStream.title}</h2>
+                      <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+                        {liveStream.title}
+                      </h2>
                       {liveStream.description && (
-                        <p className="text-gray-600 dark:text-gray-400">{liveStream.description}</p>
+                        <p className="text-gray-600 dark:text-gray-400">
+                          {liveStream.description}
+                        </p>
                       )}
                     </div>
                   </motion.div>
@@ -114,9 +129,12 @@ export default function LivePage() {
                     <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center mb-6 shadow-2xl shadow-red-500/30 animate-pulse-soft">
                       <Video className="w-10 h-10 text-white" />
                     </div>
-                    <h2 className="text-2xl font-bold text-white mb-3">No live show right now</h2>
+                    <h2 className="text-2xl font-bold text-white mb-3">
+                      No live show right now
+                    </h2>
                     <p className="text-gray-400 max-w-md mb-8">
-                      When you go live, the stream will appear here and your followers will be notified.
+                      When a creator goes live, the stream appears here and you
+                      can watch along.
                     </p>
                     {user ? (
                       <Link href="/dashboard/live" className="btn-primary">
@@ -131,10 +149,11 @@ export default function LivePage() {
                   </motion.div>
                 )}
 
-                {/* Upcoming / past streams */}
                 {upcoming.length > 0 && (
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Other streams</h3>
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+                      Other streams
+                    </h3>
                     <div className="grid sm:grid-cols-2 gap-4">
                       {upcoming.map((s) => (
                         <button
@@ -142,12 +161,16 @@ export default function LivePage() {
                           onClick={() => setActiveStream(s)}
                           className="card-hover p-4 flex gap-4 text-left"
                         >
-                          <div className="w-24 h-16 rounded-xl bg-gray-200 dark:bg-gray-700 flex items-center justify-center flex-shrink-0">
+                          <div className="w-24 h-16 rounded-xl bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
                             <MonitorPlay className="w-6 h-6 text-gray-400" />
                           </div>
                           <div className="min-w-0">
-                            <p className="font-medium text-gray-900 dark:text-gray-100 truncate">{s.title}</p>
-                            <p className="text-sm text-gray-500 dark:text-gray-400 capitalize">{s.status}</p>
+                            <p className="font-medium text-gray-900 dark:text-gray-100 truncate">
+                              {s.title}
+                            </p>
+                            <p className="text-sm text-gray-500 dark:text-gray-400 capitalize">
+                              {s.status}
+                            </p>
                           </div>
                         </button>
                       ))}
@@ -156,66 +179,107 @@ export default function LivePage() {
                 )}
               </div>
 
-              {/* Setup sidebar */}
               <div className="space-y-6">
                 <div className="card p-6">
                   <h3 className="flex items-center gap-2 text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
                     <Settings2 className="w-5 h-5 text-primary-500" />
-                    Go live in 3 steps
+                    Watch a live show
                   </h3>
-                  <ol className="space-y-4 text-sm">
+                  <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">
+                    Live shows are streamed by creators using OBS Studio or
+                    their phone. When a show is live, it plays automatically in
+                    the player above.
+                  </p>
+                  <ol className="space-y-4 text-sm text-gray-600 dark:text-gray-400">
                     <li className="flex gap-3">
-                      <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400 flex items-center justify-center font-bold text-xs">1</span>
-                      <span className="text-gray-600 dark:text-gray-400">
-                        Create a stream in your <Link href="/dashboard/live" className="text-primary-600 dark:text-primary-400 hover:underline">dashboard</Link> to get a stream key.
+                      <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400 flex items-center justify-center font-bold text-xs">
+                        1
+                      </span>
+                      <span>
+                        Open the gallery to browse creators and their latest
+                        work.
                       </span>
                     </li>
                     <li className="flex gap-3">
-                      <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400 flex items-center justify-center font-bold text-xs">2</span>
-                      <span className="text-gray-600 dark:text-gray-400">
-                        Open <span className="font-medium text-gray-900 dark:text-gray-100">OBS Studio</span> (free, open source), add a Media Source and paste the URL + key.
+                      <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400 flex items-center justify-center font-bold text-xs">
+                        2
+                      </span>
+                      <span>
+                        When a show is live, it appears in this player — just
+                        press play.
                       </span>
                     </li>
                     <li className="flex gap-3">
-                      <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400 flex items-center justify-center font-bold text-xs">3</span>
-                      <span className="text-gray-600 dark:text-gray-400">
-                        Click <span className="font-medium text-gray-900 dark:text-gray-100">Start Streaming</span> — you&apos;re live automatically.
+                      <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400 flex items-center justify-center font-bold text-xs">
+                        3
+                      </span>
+                      <span>
+                        New shows are announced to followers, no algorithm
+                        needed.
                       </span>
                     </li>
                   </ol>
-                </div>
-
-                <div className="card p-6 bg-gradient-to-br from-primary-50 to-accent-50 dark:from-primary-900/20 dark:to-accent-900/20">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-3">Recommended tools</h3>
-                  <ul className="space-y-3 text-sm">
-                    {[
-                      { name: 'OBS Studio', desc: 'Free, open-source streaming software' },
-                      { name: 'Livepeer', desc: 'Decentralized streaming, 1000 min/mo free' },
-                      { name: 'Mux', desc: 'Live streams, 1000 min/mo free' },
-                      { name: 'Cloudflare Stream', desc: 'Alternative, pay as you go' },
-                    ].map((tool) => (
-                      <li key={tool.name} className="flex items-start gap-2">
-                        <Play className="w-4 h-4 text-primary-500 mt-0.5 flex-shrink-0" />
-                        <span>
-                          <span className="font-medium text-gray-900 dark:text-gray-100">{tool.name}</span>
-                          <span className="block text-gray-500 dark:text-gray-400">{tool.desc}</span>
-                        </span>
+                  <div className="mt-4 p-4 rounded-xl bg-gradient-to-br from-primary-50 to-accent-50 dark:from-primary-900/20 dark:to-accent-900/20">
+                    <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-2 flex items-center gap-2">
+                      <Play className="w-4 h-4 text-primary-500" />
+                      Tools used
+                    </h3>
+                    <ul className="space-y-1.5 text-sm text-gray-600 dark:text-gray-400">
+                      <li>
+                        • OBS Studio — free, open-source streaming software
                       </li>
-                    ))}
-                  </ul>
+                      <li>
+                        • Livepeer — decentralized live streaming, 1000 min/mo
+                        free
+                      </li>
+                    </ul>
+                    <a
+                      href="https://obsproject.com/download"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-sm text-primary-600 dark:text-primary-400 hover:underline mt-2"
+                    >
+                      Download OBS (for creators)
+                      <svg
+                        className="w-3.5 h-3.5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M18 6 6 18M6 6l12 12"
+                        />
+                      </svg>
+                    </a>
+                  </div>
                 </div>
 
-                <div className="card p-6">
-                  <h3 className="flex items-center gap-2 text-lg font-semibold text-gray-900 dark:text-gray-100 mb-3">
-                    <AlertCircle className="w-5 h-5 text-amber-500" />
-                    Note
-                  </h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    Ingest and playback URLs are generated by your streaming provider (Livepeer or Mux).
-                    Configure them in <code className="font-mono text-xs bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">.env.local</code> to
-                    enable streaming.
-                  </p>
-                </div>
+                {user ? (
+                  <Link href="/dashboard/live" className="btn-primary w-full">
+                    <Radio className="w-5 h-5" />
+                    Start a Live Show
+                  </Link>
+                ) : (
+                  <Link href="/login" className="btn-secondary w-full">
+                    Sign in to start a show
+                  </Link>
+                )}
+
+                {user ? null : (
+                  <div className="card p-6">
+                    <h3 className="flex items-center gap-2 text-lg font-semibold text-gray-900 dark:text-gray-100 mb-3">
+                      <AlertCircle className="w-5 h-5 text-amber-500" />
+                      Note
+                    </h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      Anyone can watch live shows here. Only signed-in creators
+                      can start a show.
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           )}
@@ -236,14 +300,23 @@ export default function LivePage() {
             className="w-full max-w-4xl bg-gray-900 rounded-3xl overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
-            <video src={activeStream.playbackUrl} controls autoPlay className="w-full aspect-video bg-black" />
+            <video
+              src={activeStream.playbackUrl}
+              controls
+              autoPlay
+              className="w-full aspect-video bg-black"
+            />
             <div className="p-6">
-              <h2 className="text-xl font-bold text-white mb-1">{activeStream.title}</h2>
-              <p className="text-gray-400 text-sm capitalize">{activeStream.status}</p>
+              <h2 className="text-xl font-bold text-white mb-1">
+                {activeStream.title}
+              </h2>
+              <p className="text-gray-400 text-sm capitalize">
+                {activeStream.status}
+              </p>
             </div>
           </motion.div>
         </motion.div>
       )}
     </div>
-  )
+  );
 }

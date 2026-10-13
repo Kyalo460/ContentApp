@@ -1,54 +1,57 @@
-'use client'
+﻿"use client";
 
-import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import { AnimatePresence, motion } from 'framer-motion'
-import { LayoutGrid, Video, Image as ImageIcon, Filter } from 'lucide-react'
-import { Header } from '@/components/layout/Header'
-import { Footer } from '@/components/layout/Footer'
-import { ContentCard, Lightbox } from '@/components/content/ContentCard'
-import { ContentItem } from '@/lib/types'
-import { useAuth } from '@/components/auth/AuthProvider'
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { AnimatePresence, motion } from "framer-motion";
+import { LayoutGrid, Video, Image as ImageIcon, Filter } from "lucide-react";
+import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
+import { ContentCard, Lightbox } from "@/components/content/ContentCard";
+import { ContentItem } from "@/lib/types";
+import { useAuth } from "@/components/auth/AuthProvider";
 
-type FilterType = 'all' | 'image' | 'video'
+type FilterType = "all" | "image" | "video";
 
 const filters: { key: FilterType; label: string; icon: typeof Video }[] = [
-  { key: 'all', label: 'All', icon: LayoutGrid },
-  { key: 'video', label: 'Videos', icon: Video },
-  { key: 'image', label: 'Photos', icon: ImageIcon },
-]
+  { key: "all", label: "All", icon: LayoutGrid },
+  { key: "video", label: "Videos", icon: Video },
+  { key: "image", label: "Photos", icon: ImageIcon },
+];
 
 export default function GalleryPage() {
-  const [items, setItems] = useState<ContentItem[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [filter, setFilter] = useState<FilterType>('all')
-  const [selected, setSelected] = useState<ContentItem | null>(null)
+  const [items, setItems] = useState<ContentItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [filter, setFilter] = useState<FilterType>("all");
+  const [selected, setSelected] = useState<ContentItem | null>(null);
 
   useEffect(() => {
-    let cancelled = false
+    let cancelled = false;
 
     async function load() {
-      setLoading(true)
+      setLoading(true);
       try {
-        const res = await fetch('/api/content')
-        if (!res.ok) throw new Error('Failed to load content')
-        const data = await res.json()
-        if (!cancelled) setItems(data.content || [])
+        const res = await fetch("/api/content");
+        if (!res.ok) throw new Error("Failed to load content");
+        const data = await res.json();
+        if (!cancelled) setItems(data.content || []);
       } catch (err) {
-        if (!cancelled) setError(err instanceof Error ? err.message : 'Something went wrong')
+        if (!cancelled)
+          setError(err instanceof Error ? err.message : "Something went wrong");
       } finally {
-        if (!cancelled) setLoading(false)
+        if (!cancelled) setLoading(false);
       }
     }
 
-    load()
+    load();
     return () => {
-      cancelled = true
-    }
-  }, [])
+      cancelled = true;
+    };
+  }, []);
 
-  const filtered = filter === 'all' ? items : items.filter((item) => item.type === filter)
+  const filtered =
+    filter === "all" ? items : items.filter((item) => item.type === filter);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -65,7 +68,8 @@ export default function GalleryPage() {
                 Gallery
               </h1>
               <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl">
-                Explore videos and photography from my latest work. Click any piece to view it in full.
+                Explore videos and photography from my latest work. Click any
+                piece to view it in full.
               </p>
             </motion.div>
 
@@ -80,8 +84,8 @@ export default function GalleryPage() {
                   onClick={() => setFilter(f.key)}
                   className={`relative flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap transition-colors ${
                     filter === f.key
-                      ? 'text-white'
-                      : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700'
+                      ? "text-white"
+                      : "bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700"
                   }`}
                   aria-pressed={filter === f.key}
                 >
@@ -89,7 +93,11 @@ export default function GalleryPage() {
                     <motion.div
                       layoutId="activeFilter"
                       className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary-500 to-accent-500"
-                      transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 400,
+                        damping: 30,
+                      }}
                     />
                   )}
                   <span className="relative flex items-center gap-2">
@@ -123,10 +131,18 @@ export default function GalleryPage() {
           ) : filtered.length === 0 ? (
             <EmptyState />
           ) : (
-            <motion.div layout className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6">
+            <motion.div
+              layout
+              className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6"
+            >
               <AnimatePresence mode="popLayout">
                 {filtered.map((item, i) => (
-                  <ContentCard key={item.id} item={item} onClick={setSelected} priority={i < 4} />
+                  <ContentCard
+                    key={item.id}
+                    item={item}
+                    onClick={setSelected}
+                    priority={i < 4}
+                  />
                 ))}
               </AnimatePresence>
             </motion.div>
@@ -134,14 +150,18 @@ export default function GalleryPage() {
         </div>
       </main>
       <Footer />
-      <AnimatePresence>{selected && <Lightbox item={selected} onClose={() => setSelected(null)} />}</AnimatePresence>
+      <AnimatePresence>
+        {selected && (
+          <Lightbox item={selected} onClose={() => setSelected(null)} />
+        )}
+      </AnimatePresence>
     </div>
-  )
+  );
 }
 
 function EmptyState() {
-  const { user } = useAuth()
-  const router = useRouter()
+  const { user } = useAuth();
+  const router = useRouter();
 
   return (
     <motion.div
@@ -152,19 +172,22 @@ function EmptyState() {
       <div className="w-24 h-24 mx-auto mb-6 rounded-3xl bg-gradient-to-br from-primary-100 to-accent-100 dark:from-primary-900/30 dark:to-accent-900/30 flex items-center justify-center">
         <ImageIcon className="w-12 h-12 text-primary-500" />
       </div>
-      <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-3">No content yet</h2>
+      <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-3">
+        No content yet
+      </h2>
       <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-md mx-auto">
-        Once your first video or photo is published, it will show up here in your gallery.
+        Once your first video or photo is published, it will show up here in
+        your gallery.
       </p>
       {user ? (
-        <button onClick={() => router.push('/upload')} className="btn-primary">
+        <button onClick={() => router.push("/upload")} className="btn-primary">
           Upload Content
         </button>
       ) : (
-        <button onClick={() => router.push('/signup')} className="btn-primary">
+        <Link href="/signup" className="btn-primary">
           Get Started
-        </button>
+        </Link>
       )}
     </motion.div>
-  )
+  );
 }
